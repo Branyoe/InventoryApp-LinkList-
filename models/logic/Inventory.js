@@ -1,4 +1,6 @@
 import Utils from "../Utils.js";
+import LinkedList from "./LinkedList.js"
+import Node from "./Node.js";
 
 /** Class representing a Inventory. */
 export default class Inventory {
@@ -11,7 +13,7 @@ export default class Inventory {
    * @return {Inventory} a Inventory instance
    */
   constructor() {
-    this.#products = [];
+    this.#products = new LinkedList();
   }
 
   /**
@@ -20,13 +22,7 @@ export default class Inventory {
    * @param {Product} product 
    */
   add(product) {
-    if (!this.#products.length) {
-      this.#products.push(product);
-    } else {
-      let indexForInsert;
-      indexForInsert = this.#getProductIndexToInsert(product.getCode);
-      this.#insert(product, indexForInsert + 1);
-    }
+    this.#products.add(product);
   }
 
   /**
@@ -47,17 +43,7 @@ export default class Inventory {
    * @returns {Product} Found Product
    */
   search(code) {
-    // -----Previous Method-----
-    // let foundProduct, i = 0;
-    // do {
-    //   if (this.#products[i]?.getCode === code) foundProduct = this.#products[i];
-    //   i++;
-    // } while (!foundProduct && i < this.#products.length);
-    // return foundProduct;
-
-    if (this.#products.length == 0) return;
-    let foundIndex = this.#searchProductIndex(code);
-    return this.#products[foundIndex];
+    return this.#products.find(e => e?.getCode === code);
   }
 
   /**
@@ -67,17 +53,7 @@ export default class Inventory {
    * @return {Product} Deleted Product
    */
   delete(code) {
-    const foundProduct = this.search(code);
-    if (!foundProduct) return;
-    let i = 0, deleted = false;
-    do {
-      if (this.#products[i].getCode === code) {
-        this.#products = Utils.removeItemFromArray(i, this.#products);
-        deleted = true;
-      }
-      i++;
-    } while (!deleted && i < this.#products.length);
-    return foundProduct;
+    return this.#products.delete(node => node.data.getCode === code)?.data;
   }
 
   /**
@@ -86,12 +62,8 @@ export default class Inventory {
    * @param {Product} product - Product for incert
    * @param {number} index - Position for insert the Product
    */
-  #insert(product, index) {
-    this.#products.length += 1;
-    for (let i = this.#products.length - 1; i >= index; i--) {
-      this.#products[i] = this.#products[i - 1];
-    }
-    this.#products[index] = product;
+  insert(position, product) {
+    this.#products.insert(position, product);
   }
 
   /**
@@ -159,7 +131,7 @@ export default class Inventory {
    * @return {string} return "this.#products" in string
    */
   get getList() {
-    return this.#productListToString(this.#products);
+    return this.#products.list;
   };
 
 
@@ -169,10 +141,6 @@ export default class Inventory {
    * @return {string} return inverted "this.#products" in string
    */
   get getInvertedList() {
-    let invertedList = [];
-    for (let i = this.#products.length - 1; i >= 0; i--) {
-      invertedList.push(this.#products[i]);
-    }
-    return this.#productListToString(invertedList);
+    return this.#products.reverseList;
   }
 }

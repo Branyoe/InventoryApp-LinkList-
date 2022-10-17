@@ -1,3 +1,5 @@
+import Inventory from "./models/logic/Inventory.js";
+import Product from "./models/logic/Product.js";
 // import ToastController from "./models/ToastController.js";
 import Alert from "./models/view/Alert.js";
 import Card from "./models/view/Card.js";
@@ -5,13 +7,11 @@ import CardsManager from "./models/view/CardsManager.js";
 import Form from "./models/view/Form.js";
 import History from "./models/view/History.js";
 import HistoryItem from "./models/view/HistoryItem.js";
-import Inventory from "./models/logic/Inventory.js";
-import Product from "./models/logic/Product.js";
 import Utils from "./models/Utils.js";
 
 
-// const toast = Utils.selector('liveToast');
-// const toastComponent = new ToastController(toast);
+// // const toast = Utils.selector('liveToast');
+// // const toastComponent = new ToastController(toast);
 const alert = new Alert('No existen resultados')
 const cardsContainer = Utils.selector('cardsContainer');
 const cardsManager = new CardsManager(cardsContainer);
@@ -53,6 +53,7 @@ searchBtn.addEventListener('click', e => {
 
   const searchedCode = Number(searchInp.value);
   const foundProduct = inventory.search(searchedCode);
+  console.log(foundProduct);
   alert.remove();
 
   if (!foundProduct) {
@@ -149,3 +150,24 @@ function setSaveBtnMode(isUpdate) {
   saveBtn.classList.add('btn-primary');
   form.enableCodeInp(true);
 }
+
+// const inventory = new Inventory();
+// let p1 = new Product({code: 1, name:1, quantity: 1,cost: 1});
+// inventory.add(p1);
+// console.log(inventory.getList);
+// console.log(inventory.getInvertedList);
+// p1 = new Product({code: 2, name:1, quantity: 1,cost: 1});
+// inventory.add(p1);
+// console.log(inventory.getInvertedList);
+// console.log(inventory.search(2));
+// p1 = new Product({code: 3, name:1, quantity: 1,cost: 1});
+// inventory.add(p1);
+// console.log(inventory.getList);
+// console.log(inventory.getInvertedList);
+// console.log(inventory.delete(2));
+// console.log(inventory.getList);
+// console.log(inventory.getInvertedList);
+// p1 = new Product({code: 10, name:1, quantity: 1,cost: 1});
+// inventory.insert(4, p1)
+// console.log(inventory.getList);
+// console.log(inventory.getInvertedList);

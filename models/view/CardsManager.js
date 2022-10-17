@@ -11,13 +11,7 @@ export default class CardsManager {
   }
 
   add(card) {
-    let indexForInsert;
-    if (!this.#cards.length) {
-      this.#cards.push(card);
-    } else {
-      indexForInsert = Utils.binarySearchForInsertCard(this.#cards, card.code);
-      this.insert(card, indexForInsert + 1);
-    }
+    this.#cards.push(card);
   }
 
   insert(card, index) {
@@ -29,16 +23,12 @@ export default class CardsManager {
   }
 
   search(code) {
-    // let foundCard, i = 0;
-    // do {
-    //   if (this.#cards[i].code === code) foundCard = this.#cards[i];
-    //   i++;
-    // } while (!foundCard && i < this.#cards.length)
-    // return foundCard;
-
-    if(this.#cards.length == 0) return;
-    let foundIndex = this.#binarySearchForACard(code);
-    return this.#cards[foundIndex];
+    let foundCard, i = 0;
+    do {
+      if (this.#cards[i].code === code) foundCard = this.#cards[i];
+      i++;
+    } while (!foundCard && i < this.#cards.length)
+    return foundCard;
   }
 
   update(code, newValue) {
@@ -46,8 +36,8 @@ export default class CardsManager {
   }
 
   renderCards() {
-    if(this.ca)
-    this.removeCards();
+    if (this.ca)
+      this.removeCards();
     Utils.for(this.#cards, card => this.cardsContainer.prepend(card?.render()));
   }
 
@@ -74,7 +64,7 @@ export default class CardsManager {
     })
   }
 
-  #binarySearchForACard( wantedCode, start = 0, end = this.#cards.length - 1) {
+  #binarySearchForACard(wantedCode, start = 0, end = this.#cards.length - 1) {
     if (wantedCode > this.#cards[end].code || wantedCode < this.#cards[start].code) return;
     if (start > end) return;
     let middle = Math.floor((start + end) / 2);
